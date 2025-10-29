@@ -1,4 +1,12 @@
 package com.tricol.Tricol.mapper;
 
-public class FournisseurMapper {
+import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
+import com.tricol.Tricol.model.Fournisseur;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface FournisseurMapper {
+
+    FournisseurResponseDto toDTO(Fournisseur fournisseur);
+    Fournisseur toEntity(FournisseurResponseDto fournisseurResponseDto);
 }
