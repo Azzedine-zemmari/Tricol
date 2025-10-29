@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS mouvement_stock (
     date_mouvement DATETIME DEFAULT CURRENT_TIMESTAMP,
     quantite decimal(10,2) default 0.0,
     type ENUM('ENTREE','SORTIE','AJUSTEMENT'),
-    foreign key (produit_id) references produit(id),
-    foreign key (commande_id) references commande(id)
-);
+    FOREIGN KEY (produit_id) REFERENCES produit(id),
+    FOREIGN KEY (commande_id) REFERENCES commande(id)
+    );
