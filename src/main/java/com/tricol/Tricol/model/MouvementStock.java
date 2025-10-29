@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "mouvement-stock")
+@Table(name = "mouvement_stock")
 public class MouvementStock {
     @Id
     private String id = UUID.randomUUID().toString();
