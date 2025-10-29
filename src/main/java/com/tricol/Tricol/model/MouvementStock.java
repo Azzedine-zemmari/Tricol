@@ -18,7 +18,11 @@ public class MouvementStock {
     @JoinColumn(name = "produit_id",nullable = false)
     private Produit produit;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "commande_id")
+    private Commande commande;
+
+    @Column(name = "date_mouvement", nullable = false)
     private LocalDateTime dateMouvement;
 
     @Column(nullable = false)
