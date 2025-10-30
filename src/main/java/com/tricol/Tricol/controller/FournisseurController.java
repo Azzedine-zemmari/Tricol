@@ -18,6 +18,12 @@ public class FournisseurController {
         this.fournisseurService = fournisseurService;
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<FournisseurResponseDto> save(@RequestBody FournisseurResponseDto fournisseurDetails){
+            FournisseurResponseDto fournisseurResponseDto = fournisseurService.save(fournisseurDetails);
+            return ResponseEntity.ok(fournisseurResponseDto);
+    }
+
     @GetMapping
     public ResponseEntity<List<FournisseurResponseDto>> findAll(){
         List<FournisseurResponseDto> fournisseurs = fournisseurService.findAll();
