@@ -10,4 +10,5 @@ public interface FournisseurService {
     List<FournisseurResponseDto> findAll();
     Optional<FournisseurResponseDto> findById(String id);
     FournisseurResponseDto save(FournisseurResponseDto fournisseurResponseDto);
+    void deleteById(String id);
 }

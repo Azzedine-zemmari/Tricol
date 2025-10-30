@@ -2,6 +2,7 @@ package com.tricol.Tricol.controller;
 
 import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.service.serviceInterface.FournisseurService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +46,13 @@ public class FournisseurController {
         }else {
             return ResponseEntity.notFound().build();
         }
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") String id){
+        if(fournisseurService.findById(id).isPresent()){
+            fournisseurService.deleteById(id);
+            return ResponseEntity.ok("Fournisseur deleted");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fournisseur not found");
     }
 }

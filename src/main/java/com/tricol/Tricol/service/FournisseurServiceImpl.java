@@ -33,4 +33,8 @@ public class FournisseurServiceImpl implements FournisseurService {
     public FournisseurResponseDto save(FournisseurResponseDto fournisseur) {
         return fournisseurMapper.toDTO(fournisseurRepository.save(fournisseurMapper.toEntity(fournisseur)));
     }
+    @Override
+    public void deleteById(String id) {
+        fournisseurRepository.deleteById(id);
+    }
 }
