@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface FournisseurService {
     List<FournisseurResponseDto> findAll();
     Optional<FournisseurResponseDto> findById(String id);
+    FournisseurResponseDto save(FournisseurResponseDto fournisseurResponseDto);
 }

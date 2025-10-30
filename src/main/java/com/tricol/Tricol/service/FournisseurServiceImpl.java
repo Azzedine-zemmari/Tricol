@@ -29,4 +29,8 @@ public class FournisseurServiceImpl implements FournisseurService {
     public Optional<FournisseurResponseDto> findById(String id) {
          return fournisseurRepository.findById(id).map(fournisseurMapper::toDTO);
     }
+    @Override
+    public FournisseurResponseDto save(FournisseurResponseDto fournisseur) {
+        return fournisseurMapper.toDTO(fournisseurRepository.save(fournisseurMapper.toEntity(fournisseur)));
+    }
 }
