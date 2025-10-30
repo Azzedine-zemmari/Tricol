@@ -4,10 +4,12 @@ import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.service.serviceInterface.FournisseurService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/fournisseur")
@@ -24,4 +26,9 @@ public class FournisseurController {
         return ResponseEntity.ok(fournisseurs);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<FournisseurResponseDto> findById(@PathVariable("id") String id){
+        return fournisseurService.findById(id).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

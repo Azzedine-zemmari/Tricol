@@ -7,6 +7,7 @@ import com.tricol.Tricol.service.serviceInterface.FournisseurService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,5 +24,9 @@ public class FournisseurServiceImpl implements FournisseurService {
         return fournisseurRepository.findAll().stream()
                 .map(fournisseurMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+    @Override
+    public Optional<FournisseurResponseDto> findById(String id) {
+         return fournisseurRepository.findById(id).map(fournisseurMapper::toDTO);
     }
 }
