@@ -9,6 +9,7 @@ import com.tricol.Tricol.service.serviceInterface.ProduitService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,5 +32,9 @@ public class ProduitServiceImpl implements ProduitService {
         return produitRepository.findAll().stream()
                 .map(produitMapper::toDto)
                 .collect(Collectors.toList());
+    }
+    @Override
+    public Optional<ProduitGetDto> findById(String id) {
+        return produitRepository.findById(id).map(produitMapper::toDto);
     }
 }

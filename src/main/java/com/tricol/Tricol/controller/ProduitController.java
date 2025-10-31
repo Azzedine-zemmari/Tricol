@@ -29,4 +29,8 @@ public class ProduitController {
         List<ProduitGetDto> produitGetDtos = produitService.findAll();
         return ResponseEntity.ok(produitGetDtos);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<ProduitGetDto> findById(@PathVariable String id) {
+        return produitService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
 }

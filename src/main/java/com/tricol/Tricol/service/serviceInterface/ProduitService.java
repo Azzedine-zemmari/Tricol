@@ -4,8 +4,10 @@ import com.tricol.Tricol.dto.produit.ProduitGetDto;
 import com.tricol.Tricol.dto.produit.ProduitResponseDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProduitService {
     List<ProduitGetDto> findAll();
     ProduitGetDto save(ProduitResponseDto produit);
+    Optional<ProduitGetDto> findById(String id);
 }
