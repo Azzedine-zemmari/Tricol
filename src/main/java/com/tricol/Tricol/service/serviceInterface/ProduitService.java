@@ -10,4 +10,5 @@ public interface ProduitService {
     List<ProduitGetDto> findAll();
     ProduitGetDto save(ProduitGetDto produit);
     Optional<ProduitGetDto> findById(String id);
+    void deleteById(String id);
 }

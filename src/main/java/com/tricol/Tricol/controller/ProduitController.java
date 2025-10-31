@@ -52,4 +52,13 @@ public class ProduitController {
             return ResponseEntity.notFound().build();
         }
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") String id) {
+        if(produitService.findById(id).isPresent()){
+            produitService.deleteById(id);
+            return ResponseEntity.ok("Produit est supprime");
+        }else{
+            return ResponseEntity.ok("produit n est pas existe");
+        }
+    }
 }

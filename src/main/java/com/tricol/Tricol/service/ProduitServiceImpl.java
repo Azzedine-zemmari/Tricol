@@ -37,4 +37,8 @@ public class ProduitServiceImpl implements ProduitService {
     public Optional<ProduitGetDto> findById(String id) {
         return produitRepository.findById(id).map(produitMapper::toDto);
     }
+    @Override
+    public void deleteById(String id) {
+        produitRepository.deleteById(id);
+    }
 }
