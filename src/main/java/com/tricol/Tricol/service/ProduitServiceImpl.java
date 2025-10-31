@@ -1,7 +1,7 @@
 package com.tricol.Tricol.service;
 
 import com.tricol.Tricol.dto.produit.ProduitGetDto;
-import com.tricol.Tricol.dto.produit.ProduitResponseDto;
+import com.tricol.Tricol.dto.produit.ProduitGetDto;
 import com.tricol.Tricol.mapper.ProduitMapper;
 import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.ProduitRepository;
@@ -21,7 +21,7 @@ public class ProduitServiceImpl implements ProduitService {
         this.produitMapper = pm;
     }
     @Override
-    public ProduitGetDto save(ProduitResponseDto produit) {
+    public ProduitGetDto save(ProduitGetDto produit) {
         Produit entity = produitMapper.toEntity(produit);
         System.out.println("DEBUG mapped entity before save: " + entity);
         Produit saved = produitRepository.save(entity);

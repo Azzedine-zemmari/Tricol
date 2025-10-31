@@ -11,6 +11,6 @@ import org.mapstruct.Mapping;
 public interface ProduitMapper {
     ProduitGetDto toDto(Produit produit);
     @Mapping(target = "id", ignore = true)
-    Produit toEntity(ProduitResponseDto dto); // i change it to produitResponseDto to fix the save method in service implementation
+    Produit toEntity(ProduitGetDto dto); // i change it to produitResponseDto to fix the save method in service implementation
 
 }

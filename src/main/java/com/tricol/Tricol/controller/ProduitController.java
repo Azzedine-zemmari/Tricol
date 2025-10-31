@@ -20,7 +20,7 @@ public class ProduitController {
         this.produitService = produitService;
     }
     @PostMapping("/save")
-    public ResponseEntity<ProduitGetDto> save(@RequestBody ProduitResponseDto produit) {
+    public ResponseEntity<ProduitGetDto> save(@RequestBody ProduitGetDto produit) {
         System.out.println("DEBUG controller received DTO: " + produit);
         ProduitGetDto produitResponseDto =  produitService.save(produit);
         return ResponseEntity.ok(produitResponseDto);
@@ -35,17 +35,21 @@ public class ProduitController {
         return produitService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProduitGetDto> update(@PathVariable("id") String id, @RequestBody ProduitResponseDto produit) {
+    public ResponseEntity<ProduitGetDto> update(@PathVariable("id") String id, @RequestBody ProduitGetDto produit) {
         Optional<ProduitGetDto> produitGetDto = produitService.findById(id);
         if (produitGetDto.isPresent()) {
             ProduitGetDto produitDto = produitGetDto.get();
             produitDto.setNom(produit.getNom());
-            produitDto.setCategorie(produit.getCategorie());
+            produitDto.setCategorie(    produit.getCategorie());
             produitDto.setDescription(produit.getDescription());
             produitDto.setStock_actuel(produit.getStock_actuel());
             produitDto.setPrix_unitaire(produit.getPrix_unitaire());
 
-            ProduitResponseDto updateProduit = produitService.save(produitDto);
+            ProduitGetDto updateProduit = produitService.save(produitDto);
+            return ResponseEntity.ok(updateProduit);
+        }
+        else{
+            return ResponseEntity.notFound().build();
         }
     }
 }

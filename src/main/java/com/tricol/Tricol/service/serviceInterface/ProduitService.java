@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ProduitService {
     List<ProduitGetDto> findAll();
-    ProduitGetDto save(ProduitResponseDto produit);
+    ProduitGetDto save(ProduitGetDto produit);
     Optional<ProduitGetDto> findById(String id);
 }
