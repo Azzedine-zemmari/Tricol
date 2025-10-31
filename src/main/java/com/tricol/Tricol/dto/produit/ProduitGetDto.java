@@ -1,4 +1,12 @@
 package com.tricol.Tricol.dto.produit;
 
-public class ProduitDto {
+import lombok.Data;
+@Data
+public class ProduitGetDto {
+    private String id;
+    private String nom;
+    private String description;
+    private Double prix_unitaire;
+    private String categorie;
+    private Integer stock_actuel;
 }
