@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/produit")
@@ -32,5 +33,19 @@ public class ProduitController {
     @GetMapping("/{id}")
     public ResponseEntity<ProduitGetDto> findById(@PathVariable String id) {
         return produitService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ProduitGetDto> update(@PathVariable("id") String id, @RequestBody ProduitResponseDto produit) {
+        Optional<ProduitGetDto> produitGetDto = produitService.findById(id);
+        if (produitGetDto.isPresent()) {
+            ProduitGetDto produitDto = produitGetDto.get();
+            produitDto.setNom(produit.getNom());
+            produitDto.setCategorie(produit.getCategorie());
+            produitDto.setDescription(produit.getDescription());
+            produitDto.setStock_actuel(produit.getStock_actuel());
+            produitDto.setPrix_unitaire(produit.getPrix_unitaire());
+
+            ProduitResponseDto updateProduit = produitService.save(produitDto);
+        }
     }
 }
