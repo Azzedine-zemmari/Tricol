@@ -12,10 +12,10 @@ import java.util.UUID;
 @Table(name = "produit")
 public class Produit {
     @Id
-    String id = UUID.randomUUID().toString();
-    String nom;
-    String description;
-    Double prix_unitaire;
-    String categorie;
-    Integer stock_actuel;
+    private String id = UUID.randomUUID().toString();
+    private String nom;
+    private String description;
+    private Double prix_unitaire;
+    private String categorie;
+    private Integer stock_actuel;
 }
