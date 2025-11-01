@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "commande")
 public class Commande {
     @Id
-    String id = UUID.randomUUID().toString();
+    String id ;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fournisseur_id",nullable = false)
@@ -21,7 +21,7 @@ public class Commande {
 
     @ManyToMany
     @JoinTable(
-            name = "commande-produit",
+            name = "line_commande",
             joinColumns = @JoinColumn(name = "commande_id"),
             inverseJoinColumns = @JoinColumn(name = "produit_id")
     )
@@ -32,4 +32,11 @@ public class Commande {
     private String statut;
 
     private LocalDateTime date_command = LocalDateTime.now();
+
+//    @PrePersist
+//    public void prePersist() {
+//        if (this.id == null) {
+//            this.id = UUID.randomUUID().toString();
+//        }
+//    }
 }

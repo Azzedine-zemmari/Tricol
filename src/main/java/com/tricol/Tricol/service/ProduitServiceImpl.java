@@ -41,4 +41,8 @@ public class ProduitServiceImpl implements ProduitService {
     public void deleteById(String id) {
         produitRepository.deleteById(id);
     }
+    @Override
+    public List<Produit> findAllByIds(List<String> ids) {
+        return produitRepository.findAllById(ids);
+    }
 }
