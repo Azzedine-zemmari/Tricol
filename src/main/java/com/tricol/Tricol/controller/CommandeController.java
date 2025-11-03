@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,5 +33,9 @@ public class CommandeController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updated);
+    }
+    @GetMapping("/all")
+    public List<CommandeRequestDto> getAllCommandes() {
+        return commandeService.getAllCommandes();
     }
 }

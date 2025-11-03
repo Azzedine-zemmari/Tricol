@@ -75,5 +75,9 @@ public class CommandeServiceImpl implements CommandeService {
         return commandeMapper.toDto(updated);
     }
 
+    @Override
+    public List<CommandeRequestDto> getAllCommandes() {
+        return commandRepository.findAll().stream().map(commandeMapper::toDto).toList();
+    }
 
 }
