@@ -13,7 +13,8 @@ import java.util.UUID;
 @Table(name = "commande")
 public class Commande {
     @Id
-    String id ;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id ;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fournisseur_id",nullable = false)
@@ -33,10 +34,4 @@ public class Commande {
 
     private LocalDateTime date_command = LocalDateTime.now();
 
-//    @PrePersist
-//    public void prePersist() {
-//        if (this.id == null) {
-//            this.id = UUID.randomUUID().toString();
-//        }
-//    }
 }

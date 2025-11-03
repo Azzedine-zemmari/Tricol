@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommandeController {
     private final CommandeService commandeService;
 
-    @PostMapping
+    @PostMapping("/save")
     public Commande addCommande(@RequestBody CommandeRequestDto commande) {
         System.out.println("dto : " + commande);
         return commandeService.createCommande(commande);

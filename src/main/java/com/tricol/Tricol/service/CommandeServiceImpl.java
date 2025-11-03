@@ -39,7 +39,7 @@ public class CommandeServiceImpl implements CommandeService {
 
         // Map DTO to Entity
         Commande commande = new Commande();
-        commande.setId(UUID.randomUUID().toString());  // Or use generator annotation on entity
+
         commande.setFournisseur(fournisseur);
         commande.setProduits(produits);
         commande.setMontant_total(dto.getMontant_total());

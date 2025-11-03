@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS line_commande (
-    id varchar(255) primary key ,
-    commande_id varchar(255) not null,
+    id int auto_increment primary key ,
+    commande_id int not null,
     produit_id varchar(255) not null,
     prix_unitaire decimal(10,2) ,
     qualite int,
