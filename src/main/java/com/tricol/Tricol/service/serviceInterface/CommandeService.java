@@ -11,4 +11,5 @@ public interface CommandeService {
     Optional<CommandeRequestDto> getCommandeById(int id);
     CommandeRequestDto updateStatus(int id ,String dto);
     List<CommandeRequestDto> getAllCommandes();
+    CommandeRequestDto findCommandeByID(int id);
 }

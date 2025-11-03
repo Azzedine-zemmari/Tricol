@@ -80,4 +80,8 @@ public class CommandeServiceImpl implements CommandeService {
         return commandRepository.findAll().stream().map(commandeMapper::toDto).toList();
     }
 
+    @Override
+    public CommandeRequestDto findCommandeByID(int id){
+        return commandeMapper.toDto(commandRepository.findById(id).get());
+    }
 }

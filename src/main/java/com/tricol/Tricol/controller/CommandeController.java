@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/Commande")
@@ -37,5 +38,13 @@ public class CommandeController {
     @GetMapping("/all")
     public List<CommandeRequestDto> getAllCommandes() {
         return commandeService.getAllCommandes();
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<CommandeRequestDto> getCommandeById(@PathVariable int id) {
+        Optional<CommandeRequestDto> commande = commandeService.getCommandeById(id);
+        if(commande.isPresent()) {
+            return ResponseEntity.ok(commande.get());
+        }
+            return ResponseEntity.notFound().build();
     }
 }
