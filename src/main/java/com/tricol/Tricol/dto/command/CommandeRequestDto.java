@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 public class CommandeRequestDto {
     private String fournisseurId;
-    private List<String> produits;
+    private List<Produit> produits;
     private BigDecimal montant_total;
     private String statut;
 
