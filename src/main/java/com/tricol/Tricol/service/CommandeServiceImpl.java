@@ -12,6 +12,7 @@ import com.tricol.Tricol.service.serviceInterface.CommandeService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,15 +39,25 @@ public class CommandeServiceImpl implements CommandeService {
         Fournisseur fournisseur = fournisseurRepository.findById(dto.getFournisseurId())
                 .orElseThrow(() -> new RuntimeException("Fournisseur with ID " + dto.getFournisseurId() + " not found"));
 
+//        List<Produit> produits = produitRepository.findAllById(dto.getProduits());
 
-        // Map DTO to Entity
+        List<Produit> produits = produitRepository.findAllById(
+                dto.getProduits().stream()
+                        .toList()
+        );
+
+//        // Map DTO to Entity
         Commande commande = new Commande();
 
         commande.setFournisseur(fournisseur);
         if(dto.getProduits() != null) {
-        commande.setProduits(dto.getProduits());
+            commande.setProduits(produits);
         }
-        commande.setMontant_total(dto.getMontant_total());
+
+        BigDecimal montant = produits.stream()
+                                .map(produit -> BigDecimal.valueOf(produit.getPrix_unitaire()))
+                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        commande.setMontant_total(montant);
         commande.setStatut(dto.getStatut());
 
         // Save via repository
