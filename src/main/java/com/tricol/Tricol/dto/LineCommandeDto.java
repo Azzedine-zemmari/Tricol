@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 public class LineCommandeDto {
     private int id;
-    private Produit produit;
+    private String produitId;
     private int quantite;
 }

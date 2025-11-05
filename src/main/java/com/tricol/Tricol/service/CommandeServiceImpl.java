@@ -1,9 +1,11 @@
 package com.tricol.Tricol.service;
 
+import com.tricol.Tricol.dto.LineCommandeDto;
 import com.tricol.Tricol.dto.command.CommandeRequestDto;
 import com.tricol.Tricol.mapper.CommandeMapper;
 import com.tricol.Tricol.model.Commande;
 import com.tricol.Tricol.model.Fournisseur;
+import com.tricol.Tricol.model.LineCommande;
 import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.CommandRepository;
 import com.tricol.Tricol.repository.FournisseurRepository;
@@ -34,37 +36,57 @@ public class CommandeServiceImpl implements CommandeService {
     }
 
     @Override
-    public Commande createCommande(CommandeRequestDto dto){
-        // Fetch related entities
+    @Transactional
+    public Commande createCommande(CommandeRequestDto dto) {
+        // Fetch the fournisseur
         Fournisseur fournisseur = fournisseurRepository.findById(dto.getFournisseurId())
-                .orElseThrow(() -> new RuntimeException("Fournisseur with ID " + dto.getFournisseurId() + " not found"));
+                .orElseThrow(() -> new RuntimeException(
+                        "Fournisseur with ID " + dto.getFournisseurId() + " not found")
+                );
 
-//        List<Produit> produits = produitRepository.findAllById(dto.getProduits());
-
-        List<Produit> produits = produitRepository.findAllById(
-                dto.getProduits().stream()
-                        .toList()
-        );
-
-//        // Map DTO to Entity
+        // Create a new Commande
         Commande commande = new Commande();
-
         commande.setFournisseur(fournisseur);
-        if(dto.getProduits() != null) {
-            commande.setProduits(produits);
-        }
-
-        BigDecimal montant = produits.stream()
-                                .map(produit -> BigDecimal.valueOf(produit.getPrix_unitaire()))
-                                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        commande.setMontant_total(montant);
         commande.setStatut(dto.getStatut());
 
-        // Save via repository
+        BigDecimal montantTotal = BigDecimal.ZERO;
+
+        // Loop through each product (line) in the request
+        for (LineCommandeDto lineDto : dto.getProduits()) {
+            Produit produit = produitRepository.findById(lineDto.getProduitId())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Produit with ID " + lineDto.getProduitId() + " not found")
+                    );
+
+            BigDecimal prixUnitaire = BigDecimal.valueOf(produit.getPrix_unitaire());
+            BigDecimal quantite = BigDecimal.valueOf(lineDto.getQuantite());
+            BigDecimal sousTotal = prixUnitaire.multiply(quantite);
+
+            // Accumulate total
+            montantTotal = montantTotal.add(sousTotal);
+
+            // Create and link LineCommande
+            LineCommande line = new LineCommande();
+            line.setProduit(produit);
+            line.setQuantite(lineDto.getQuantite());
+            line.setPrix_unitaire(produit.getPrix_unitaire());
+            line.setCommande(commande);
+
+            // Add this line to the commande (so it gets saved via cascade)
+            commande.getLignesCommande().add(line);
+        }
+
+        // Set total and save
+        commande.setMontant_total(montantTotal);
+
         Commande saved = commandRepository.save(commande);
-        System.out.println("Generated ID: " + saved.getId());
+
+        System.out.println("Commande created with ID: " + saved.getId() +
+                " | Montant total: " + saved.getMontant_total());
+
         return saved;
     }
+
     @Override
     public Optional<CommandeRequestDto> getCommandeById(int id){
         return commandRepository.findById(id).map(commande -> commandeMapper.toDto(commande));
