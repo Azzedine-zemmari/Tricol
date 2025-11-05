@@ -109,6 +109,9 @@ public class CommandeServiceImpl implements CommandeService {
         if(nouveauStatut.equalsIgnoreCase("LIVRÉE")){
            List<LineCommande> lineCommandes = lineCommandRepository.findByCommandeId(updated.getId());
            for(LineCommande lineCommande : lineCommandes){
+               Produit produit =  lineCommande.getProduit();
+               produit.setStock_actuel(produit.getStock_actuel() - lineCommande.getQuantite());
+               produitRepository.save(produit);
                MouvementStock mouvementStock = new MouvementStock();
                mouvementStock.setProduit(lineCommande.getProduit());
                mouvementStock.setCommande(updated);
