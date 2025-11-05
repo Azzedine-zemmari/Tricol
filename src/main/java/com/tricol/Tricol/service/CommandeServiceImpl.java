@@ -1,20 +1,18 @@
 package com.tricol.Tricol.service;
 
+import com.tricol.Tricol.Enums.TypeMouvement;
 import com.tricol.Tricol.dto.LineCommandeDto;
 import com.tricol.Tricol.dto.command.CommandeRequestDto;
 import com.tricol.Tricol.mapper.CommandeMapper;
-import com.tricol.Tricol.model.Commande;
-import com.tricol.Tricol.model.Fournisseur;
-import com.tricol.Tricol.model.LineCommande;
-import com.tricol.Tricol.model.Produit;
-import com.tricol.Tricol.repository.CommandRepository;
-import com.tricol.Tricol.repository.FournisseurRepository;
-import com.tricol.Tricol.repository.ProduitRepository;
+import com.tricol.Tricol.model.*;
+import com.tricol.Tricol.repository.*;
 import com.tricol.Tricol.service.serviceInterface.CommandeService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.sound.sampled.Line;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,13 +24,17 @@ public class CommandeServiceImpl implements CommandeService {
     private final FournisseurRepository fournisseurRepository;
     private final ProduitRepository produitRepository;
     private final CommandeMapper commandeMapper;
+    private final LineCommandRepository lineCommandRepository;
+    private final MouvementStockRepository mouvementStockRepository;
 
 
-    public CommandeServiceImpl(CommandRepository commandRepository, FournisseurRepository fournisseurRepository, ProduitRepository produitRepository, CommandeMapper commandeMapper) {
+    public CommandeServiceImpl(CommandRepository commandRepository, FournisseurRepository fournisseurRepository, ProduitRepository produitRepository, CommandeMapper commandeMapper , LineCommandRepository lineCommandRepository, MouvementStockRepository mouvementStockRepository) {
         this.commandRepository = commandRepository;
         this.fournisseurRepository = fournisseurRepository;
         this.produitRepository = produitRepository;
         this.commandeMapper = commandeMapper;
+        this.lineCommandRepository = lineCommandRepository;
+        this.mouvementStockRepository = mouvementStockRepository;
     }
 
     @Override
@@ -104,6 +106,19 @@ public class CommandeServiceImpl implements CommandeService {
         commande.setStatut(nouveauStatut); // update only status
         Commande updated = commandRepository.save(commande);
 
+        if(nouveauStatut.equalsIgnoreCase("LIVRÉE")){
+           List<LineCommande> lineCommandes = lineCommandRepository.findByCommandeId(updated.getId());
+           for(LineCommande lineCommande : lineCommandes){
+               MouvementStock mouvementStock = new MouvementStock();
+               mouvementStock.setProduit(lineCommande.getProduit());
+               mouvementStock.setCommande(updated);
+               mouvementStock.setQuantite(lineCommande.getQuantite());
+               mouvementStock.setDateMouvement(LocalDateTime.now());
+               mouvementStock.setType(TypeMouvement.ENTREE);
+               mouvementStockRepository.save(mouvementStock);
+           }
+
+        }
         // MapStruct can still be used if you want to return a DTO
         return commandeMapper.toDto(updated);
     }
