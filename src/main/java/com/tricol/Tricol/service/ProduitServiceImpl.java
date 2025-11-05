@@ -6,6 +6,9 @@ import com.tricol.Tricol.mapper.ProduitMapper;
 import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.ProduitRepository;
 import com.tricol.Tricol.service.serviceInterface.ProduitService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,11 +31,14 @@ public class ProduitServiceImpl implements ProduitService {
         return produitMapper.toDto(saved);
     }
     @Override
-    public List<ProduitGetDto> findAll(){
-        return produitRepository.findAll().stream()
-                .map(produitMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<ProduitGetDto> findAll(int page, int size) {
+        if (size < 1) size = 10;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Produit> produits = produitRepository.findAll(pageable);
+        return produits.map(produitMapper::toDto);
     }
+
+
     @Override
     public Optional<ProduitGetDto> findById(String id) {
         return produitRepository.findById(id).map(produitMapper::toDto);

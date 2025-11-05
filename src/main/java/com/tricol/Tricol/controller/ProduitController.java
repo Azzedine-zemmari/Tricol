@@ -6,6 +6,7 @@ import com.tricol.Tricol.dto.produit.ProduitResponseDto;
 import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.FournisseurRepository;
 import com.tricol.Tricol.service.serviceInterface.ProduitService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +27,12 @@ public class ProduitController {
         return ResponseEntity.ok(produitResponseDto);
     }
     @GetMapping("/")
-    public ResponseEntity<List<ProduitGetDto>> findAll() {
-        List<ProduitGetDto> produitGetDtos = produitService.findAll();
-        return ResponseEntity.ok(produitGetDtos);
+    public ResponseEntity<Page<ProduitGetDto>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        if (size < 1) size = 10;
+        Page<ProduitGetDto> produits = produitService.findAll(page, size);
+        return ResponseEntity.ok(produits);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProduitGetDto> findById(@PathVariable String id) {
         return produitService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
