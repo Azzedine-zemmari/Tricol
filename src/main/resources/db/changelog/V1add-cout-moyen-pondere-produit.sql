@@ -1,0 +1,1 @@
+ALTER TABLE produit ADD COLUMN cout_moyen_pondere DOUBLE DEFAULT 0;

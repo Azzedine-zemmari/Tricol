@@ -7,4 +7,5 @@
     <include file="V1create_commandes_table.sql" relativeToChangelogFile="true"/>
     <include file="V1create_MouvementStock_table.sql" relativeToChangelogFile="true"/>
     <include file="V1create_lineCommand_table.sql" relativeToChangelogFile="true"/>
+    <include file="V1add-cout-moyen-pondere-produit.sql" relativeToChangelogFile="true" />
 </databaseChangeLog>
