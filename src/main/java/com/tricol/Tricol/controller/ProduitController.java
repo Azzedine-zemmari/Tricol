@@ -3,6 +3,7 @@ package com.tricol.Tricol.controller;
 import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.dto.produit.ProduitGetDto;
 import com.tricol.Tricol.dto.produit.ProduitResponseDto;
+import com.tricol.Tricol.exception.ProduitNotFound;
 import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.FournisseurRepository;
 import com.tricol.Tricol.service.serviceInterface.ProduitService;
@@ -35,7 +36,7 @@ public class ProduitController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProduitGetDto> findById(@PathVariable String id) {
-        return produitService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return produitService.findById(id).map(ResponseEntity::ok).orElseThrow(()-> new ProduitNotFound("produit not found"));
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<ProduitGetDto> update(@PathVariable("id") String id, @RequestBody ProduitGetDto produit) {
