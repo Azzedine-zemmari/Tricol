@@ -2,6 +2,7 @@ package com.tricol.Tricol.controller;
 
 import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.service.serviceInterface.FournisseurService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,9 @@ public class FournisseurController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FournisseurResponseDto>> findAll(){
-        List<FournisseurResponseDto> fournisseurs = fournisseurService.findAll();
+    public ResponseEntity<Page<FournisseurResponseDto>> findAll(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size){
+        if(size < 1) size = 10;
+        Page<FournisseurResponseDto> fournisseurs = fournisseurService.findAll(page , size);
         return ResponseEntity.ok(fournisseurs);
     }
 
