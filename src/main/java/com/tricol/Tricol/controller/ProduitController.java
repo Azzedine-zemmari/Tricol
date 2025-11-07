@@ -6,6 +6,7 @@ import com.tricol.Tricol.service.serviceInterface.ProduitService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +28,9 @@ public class ProduitController {
     }
     @GetMapping
     @Operation(summary = "Récupérer tous les produits avec pagination et tri")
-    public ResponseEntity<Page<ProduitGetDto>> findAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "prix_unitaire") String sortBy,
-            @RequestParam(defaultValue = "ASC") String sortDirection) {
+    public ResponseEntity<Page<ProduitGetDto>> findAll(Pageable pageable) {
 
-        Page<ProduitGetDto> produits = produitService.findAll(page, size, sortBy, sortDirection);
+        Page<ProduitGetDto> produits = produitService.findAll(pageable);
         return ResponseEntity.ok(produits);
     }
 

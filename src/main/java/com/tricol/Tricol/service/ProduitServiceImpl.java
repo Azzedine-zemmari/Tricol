@@ -32,13 +32,7 @@ public class ProduitServiceImpl implements ProduitService {
         return produitMapper.toDto(saved);
     }
     @Override
-    public Page<ProduitGetDto> findAll(int page, int size, String sortBy, String sortDirection) {
-        if (size < 1) size = 10;
-        Sort sort = sortDirection.equalsIgnoreCase("ASC")
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-
-        Pageable pageable = PageRequest.of(page, size, sort);
+    public Page<ProduitGetDto> findAll(Pageable pageable) {
         Page<Produit> produits = produitRepository.findAll(pageable);
         return produits.map(produitMapper::toDto);
     }
