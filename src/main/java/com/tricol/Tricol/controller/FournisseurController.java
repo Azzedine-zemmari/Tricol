@@ -1,6 +1,7 @@
 package com.tricol.Tricol.controller;
 
 import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
+import com.tricol.Tricol.exception.FournisseurNotFound;
 import com.tricol.Tricol.service.serviceInterface.FournisseurService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -33,6 +34,9 @@ public class FournisseurController {
     public ResponseEntity<Page<FournisseurResponseDto>> findAll(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size){
         if(size < 1) size = 10;
         Page<FournisseurResponseDto> fournisseurs = fournisseurService.findAll(page , size);
+        if(fournisseurs.isEmpty()){
+            throw new FournisseurNotFound("fournisseur not found");
+        }
         return ResponseEntity.ok(fournisseurs);
     }
 

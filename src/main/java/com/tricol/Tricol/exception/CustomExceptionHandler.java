@@ -30,4 +30,12 @@ public class CustomExceptionHandler {
         );
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(FournisseurNotFound.class)
+    public ResponseEntity<ApiErreur> fournisseurNotFoundHandler(FournisseurNotFound e){
+        ApiErreur apiErreur = new ApiErreur();
+        apiErreur.setMessage(e.getMessage());
+        apiErreur.setCode(HttpStatus.NOT_FOUND.value());
+        apiErreur.setTimestamp(LocalDateTime.now());
+        return new ResponseEntity<>(apiErreur,HttpStatus.NOT_FOUND);
+    }
 }

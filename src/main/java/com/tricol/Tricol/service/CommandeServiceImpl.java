@@ -3,6 +3,7 @@ package com.tricol.Tricol.service;
 import com.tricol.Tricol.Enums.TypeMouvement;
 import com.tricol.Tricol.dto.LineCommandeDto;
 import com.tricol.Tricol.dto.command.CommandeRequestDto;
+import com.tricol.Tricol.exception.ProduitNotFound;
 import com.tricol.Tricol.mapper.CommandeMapper;
 import com.tricol.Tricol.model.*;
 import com.tricol.Tricol.repository.*;
@@ -59,9 +60,7 @@ public class CommandeServiceImpl implements CommandeService {
         // Loop through each product (line) in the request
         for (LineCommandeDto lineDto : dto.getProduits()) {
             Produit produit = produitRepository.findById(lineDto.getProduitId())
-                    .orElseThrow(() -> new RuntimeException(
-                            "Produit with ID " + lineDto.getProduitId() + " not found")
-                    );
+                    .orElseThrow(() -> new ProduitNotFound("produit not found"));
 
             BigDecimal prixUnitaire = BigDecimal.valueOf(produit.getPrix_unitaire());
             BigDecimal quantite = BigDecimal.valueOf(lineDto.getQuantite());
