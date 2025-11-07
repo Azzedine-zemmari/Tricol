@@ -1,17 +1,13 @@
 package com.tricol.Tricol.controller;
 
-import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.dto.produit.ProduitGetDto;
-import com.tricol.Tricol.dto.produit.ProduitResponseDto;
 import com.tricol.Tricol.exception.ProduitNotFound;
-import com.tricol.Tricol.model.Produit;
-import com.tricol.Tricol.repository.FournisseurRepository;
 import com.tricol.Tricol.service.serviceInterface.ProduitService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +18,7 @@ public class ProduitController {
         this.produitService = produitService;
     }
     @PostMapping("/save")
-    public ResponseEntity<ProduitGetDto> save(@RequestBody ProduitGetDto produit) {
+    public ResponseEntity<ProduitGetDto> save(@Valid @RequestBody ProduitGetDto produit) {
         System.out.println("DEBUG controller received DTO: " + produit);
         ProduitGetDto produitResponseDto =  produitService.save(produit);
         return ResponseEntity.ok(produitResponseDto);
@@ -43,7 +39,7 @@ public class ProduitController {
         return produitService.findById(id).map(ResponseEntity::ok).orElseThrow(()-> new ProduitNotFound("produit not found"));
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProduitGetDto> update(@PathVariable("id") String id, @RequestBody ProduitGetDto produit) {
+    public ResponseEntity<ProduitGetDto> update(@Valid @PathVariable("id") String id, @RequestBody ProduitGetDto produit) {
         Optional<ProduitGetDto> produitGetDto = produitService.findById(id);
         if (produitGetDto.isPresent()) {
             ProduitGetDto produitDto = produitGetDto.get();

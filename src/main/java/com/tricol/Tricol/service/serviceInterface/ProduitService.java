@@ -1,7 +1,6 @@
 package com.tricol.Tricol.service.serviceInterface;
 
 import com.tricol.Tricol.dto.produit.ProduitGetDto;
-import com.tricol.Tricol.dto.produit.ProduitResponseDto;
 import com.tricol.Tricol.model.Produit;
 import org.springframework.data.domain.Page;
 

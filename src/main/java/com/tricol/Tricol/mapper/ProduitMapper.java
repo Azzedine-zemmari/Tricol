@@ -1,7 +1,6 @@
 package com.tricol.Tricol.mapper;
 
 import com.tricol.Tricol.dto.produit.ProduitGetDto;
-import com.tricol.Tricol.dto.produit.ProduitResponseDto;
 import com.tricol.Tricol.model.Produit;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

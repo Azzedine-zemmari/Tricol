@@ -3,6 +3,7 @@ package com.tricol.Tricol.controller;
 import com.tricol.Tricol.dto.command.CommandeRequestDto;
 import com.tricol.Tricol.model.Commande;
 import com.tricol.Tricol.service.serviceInterface.CommandeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class CommandeController {
     private final CommandeService commandeService;
 
     @PostMapping("/save")
-    public Commande addCommande(@RequestBody CommandeRequestDto commande) {
+    public Commande addCommande(@Valid @RequestBody CommandeRequestDto commande) {
         System.out.println("dto : " + commande);
         return commandeService.createCommande(commande);
     }

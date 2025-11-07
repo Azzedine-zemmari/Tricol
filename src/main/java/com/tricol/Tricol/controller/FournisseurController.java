@@ -2,6 +2,7 @@ package com.tricol.Tricol.controller;
 
 import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.service.serviceInterface.FournisseurService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class FournisseurController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<FournisseurResponseDto> save(@RequestBody FournisseurResponseDto fournisseurDetails){
+    public ResponseEntity<FournisseurResponseDto> save(@Valid @RequestBody FournisseurResponseDto fournisseurDetails){
             FournisseurResponseDto fournisseurResponseDto = fournisseurService.save(fournisseurDetails);
             return ResponseEntity.ok(fournisseurResponseDto);
     }
