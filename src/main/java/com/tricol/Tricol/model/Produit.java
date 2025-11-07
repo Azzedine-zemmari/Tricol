@@ -1,5 +1,6 @@
 package com.tricol.Tricol.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,4 +19,6 @@ public class Produit {
     private Double prix_unitaire;
     private String categorie;
     private Integer stock_actuel;
+    @Column(name = "cout_moyen_pondere")
+    private Double cout_moyen_pondere;
 }

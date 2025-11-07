@@ -110,19 +110,28 @@ public class CommandeServiceImpl implements CommandeService {
            List<LineCommande> lineCommandes = lineCommandRepository.findByCommandeId(updated.getId());
            for(LineCommande lineCommande : lineCommandes){
                Produit produit =  lineCommande.getProduit();
-               produit.setStock_actuel(produit.getStock_actuel() - lineCommande.getQuantite());
+
+               int stockAncien = produit.getStock_actuel();
+               double coutAncien = produit.getCout_moyen_pondere();
+               int quantityEntree = lineCommande.getQuantite();
+               double countEntree = lineCommande.getPrix_unitaire();
+
+               // cump
+               double newCump = ((stockAncien * coutAncien) + (quantityEntree * countEntree)) / (stockAncien + quantityEntree) ;
+               produit.setCout_moyen_pondere(newCump);
+               produit.setStock_actuel(produit.getStock_actuel() + lineCommande.getQuantite());
                produitRepository.save(produit);
+
                MouvementStock mouvementStock = new MouvementStock();
-               mouvementStock.setProduit(lineCommande.getProduit());
+               mouvementStock.setProduit(produit);
                mouvementStock.setCommande(updated);
-               mouvementStock.setQuantite(lineCommande.getQuantite());
+               mouvementStock.setQuantite(quantityEntree);
                mouvementStock.setDateMouvement(LocalDateTime.now());
                mouvementStock.setType(TypeMouvement.ENTREE);
                mouvementStockRepository.save(mouvementStock);
            }
 
         }
-        // MapStruct can still be used if you want to return a DTO
         return commandeMapper.toDto(updated);
     }
 
