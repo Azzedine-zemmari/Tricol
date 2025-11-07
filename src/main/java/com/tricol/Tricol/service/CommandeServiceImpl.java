@@ -8,6 +8,9 @@ import com.tricol.Tricol.model.*;
 import com.tricol.Tricol.repository.*;
 import com.tricol.Tricol.service.serviceInterface.CommandeService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.sound.sampled.Line;
@@ -136,8 +139,11 @@ public class CommandeServiceImpl implements CommandeService {
     }
 
     @Override
-    public List<CommandeRequestDto> getAllCommandes() {
-        return commandRepository.findAll().stream().map(commandeMapper::toDto).toList();
+    public Page<CommandeRequestDto> getAllCommandes(int paage , int size) {
+        if(size < 1) size = 10;
+        Pageable pageable = PageRequest.of(paage, size);
+        Page<Commande> commande = commandRepository.findAll(pageable);
+        return commande.map(commandeMapper::toDto);
     }
 
     @Override

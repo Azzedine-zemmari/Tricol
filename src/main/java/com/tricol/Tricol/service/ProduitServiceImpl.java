@@ -9,6 +9,7 @@ import com.tricol.Tricol.service.serviceInterface.ProduitService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +32,17 @@ public class ProduitServiceImpl implements ProduitService {
         return produitMapper.toDto(saved);
     }
     @Override
-    public Page<ProduitGetDto> findAll(int page, int size) {
+    public Page<ProduitGetDto> findAll(int page, int size, String sortBy, String sortDirection) {
         if (size < 1) size = 10;
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = sortDirection.equalsIgnoreCase("ASC")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<Produit> produits = produitRepository.findAll(pageable);
         return produits.map(produitMapper::toDto);
     }
+
 
 
     @Override

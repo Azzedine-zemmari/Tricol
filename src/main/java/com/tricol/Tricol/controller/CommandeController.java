@@ -4,6 +4,7 @@ import com.tricol.Tricol.dto.command.CommandeRequestDto;
 import com.tricol.Tricol.model.Commande;
 import com.tricol.Tricol.service.serviceInterface.CommandeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,9 @@ public class CommandeController {
         return ResponseEntity.ok(updated);
     }
     @GetMapping("/all")
-    public List<CommandeRequestDto> getAllCommandes() {
-        return commandeService.getAllCommandes();
+    public ResponseEntity<Page<CommandeRequestDto>> getAllCommandes(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size) {
+        Page<CommandeRequestDto> commandes = commandeService.getAllCommandes(page,size);
+        return ResponseEntity.ok(commandes);
     }
     @GetMapping("/{id}")
     public ResponseEntity<CommandeRequestDto> getCommandeById(@PathVariable int id) {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProduitService {
-    Page<ProduitGetDto> findAll(int page, int size);
+    Page<ProduitGetDto> findAll(int page, int size , String sortBy , String sortDirection);
     ProduitGetDto save(ProduitGetDto produit);
     Optional<ProduitGetDto> findById(String id);
     void deleteById(String id);

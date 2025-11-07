@@ -13,18 +13,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CommandeMapper {
 
-//    @Mapping(target = "produits", source = "produits", qualifiedByName = "produitListToIdList")
+    @Mapping(source = "fournisseur.id" , target = "fournisseurId")
     CommandeRequestDto toDto(Commande commande);
-
-//    @Mapping(target = "produits", ignore = true) // service will handle fetching Produit entities
+    @Mapping(target = "fournisseur.id" , source = "fournisseurId")
     Commande toEntity(CommandeRequestDto dto);
 
-//    @Named("produitListToIdList")
-//    default List<String> produitListToIdList(List<Produit> produits) {
-//        if (produits == null) return null;
-//        return produits.stream()
-//                .map(produit -> produit.getId().toString()) // assuming Produit has getId() as UUID
-//                .toList();
-//    }
 }
 

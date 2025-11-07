@@ -27,10 +27,14 @@ public class ProduitController {
         ProduitGetDto produitResponseDto =  produitService.save(produit);
         return ResponseEntity.ok(produitResponseDto);
     }
-    @GetMapping("/")
-    public ResponseEntity<Page<ProduitGetDto>> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        if (size < 1) size = 10;
-        Page<ProduitGetDto> produits = produitService.findAll(page, size);
+    @GetMapping
+    public ResponseEntity<Page<ProduitGetDto>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "prix_unitaire") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        Page<ProduitGetDto> produits = produitService.findAll(page, size, sortBy, sortDirection);
         return ResponseEntity.ok(produits);
     }
 
