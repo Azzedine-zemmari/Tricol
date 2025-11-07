@@ -2,6 +2,7 @@ package com.tricol.Tricol.controller;
 
 import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.service.serviceInterface.FournisseurService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,14 @@ public class FournisseurController {
     }
 
     @PostMapping("/save")
+    @Operation(summary = "Enregistrer un fournisseur ")
     public ResponseEntity<FournisseurResponseDto> save(@Valid @RequestBody FournisseurResponseDto fournisseurDetails){
             FournisseurResponseDto fournisseurResponseDto = fournisseurService.save(fournisseurDetails);
             return ResponseEntity.ok(fournisseurResponseDto);
     }
 
     @GetMapping
+    @Operation(summary = "Récupérer tous les fournisseurs avec pagination")
     public ResponseEntity<Page<FournisseurResponseDto>> findAll(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size){
         if(size < 1) size = 10;
         Page<FournisseurResponseDto> fournisseurs = fournisseurService.findAll(page , size);
@@ -34,11 +37,13 @@ public class FournisseurController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Récupérer un fournisseur avec son id ")
     public ResponseEntity<FournisseurResponseDto> findById(@PathVariable("id") String id){
         return fournisseurService.findById(id).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
     @PutMapping("/update/{id}")
+    @Operation(summary = "Modifier les details du fournisseur ")
     public ResponseEntity<FournisseurResponseDto> update(@PathVariable("id") String id, @RequestBody FournisseurResponseDto fournisseurDetails){
         Optional<FournisseurResponseDto> OldFournisseur = fournisseurService.findById(id);
         if(OldFournisseur.isPresent()){
@@ -57,6 +62,7 @@ public class FournisseurController {
         }
     }
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "Supprimer fournisseur avec son id")
     public ResponseEntity<String> delete(@PathVariable("id") String id){
         if(fournisseurService.findById(id).isPresent()){
             fournisseurService.deleteById(id);
