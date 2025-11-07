@@ -23,4 +23,9 @@ public class MouvementStockController {
         List<MouvementStock> mouvementStockList = mouvementStockService.getMouvementStock(produitId , typeMouvement , commandeId);
         return ResponseEntity.ok(mouvementStockList);
     }
+    @PostMapping("/sortieStock")
+    public ResponseEntity<MouvementStock> SortieStock(@RequestParam String produitId , @RequestParam int quantity){
+        MouvementStock mouvementStock = mouvementStockService.sortieStock(produitId , quantity);
+        return ResponseEntity.ok(mouvementStock);
+    }
 }
