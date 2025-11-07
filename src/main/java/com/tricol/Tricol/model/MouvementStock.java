@@ -1,5 +1,6 @@
 package com.tricol.Tricol.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tricol.Tricol.Enums.TypeMouvement;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,10 +17,12 @@ public class MouvementStock {
 
     @ManyToOne
     @JoinColumn(name = "produit_id",nullable = false)
+    @JsonBackReference // prevents infinite recursion when serializing
     private Produit produit;
 
     @ManyToOne
     @JoinColumn(name = "commande_id")
+    @JsonBackReference // prevents infinite recursion when serializing
     private Commande commande;
 
     @Column(name = "date_mouvement", nullable = false)
