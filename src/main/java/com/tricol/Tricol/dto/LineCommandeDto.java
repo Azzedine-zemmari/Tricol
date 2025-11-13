@@ -14,4 +14,9 @@ public class LineCommandeDto {
     private String produitId;
     @PositiveOrZero(message = "la quantite doit etre positive")
     private int quantite;
+
+    public LineCommandeDto(String produitId, int quantite) {
+        this.produitId = produitId;
+        this.quantite = quantite;
+    }
 }
