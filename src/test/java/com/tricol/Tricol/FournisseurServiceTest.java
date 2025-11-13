@@ -20,8 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -102,6 +101,32 @@ public class FournisseurServiceTest {
         assertTrue(result.isEmpty());
         verify(fournisseurRepository, times(1)).findById(id);
         verify(fournisseurMapper, never()).toDTO(any());
+    }
+
+    @Test
+    void save_shouldConvertAndReturnDto() {
+        // Arrange
+        FournisseurResponseDto dtoToSave = new FournisseurResponseDto();
+        Fournisseur entityToSave = new Fournisseur();
+        Fournisseur savedEntity = new Fournisseur();
+        FournisseurResponseDto savedDto = new FournisseurResponseDto();
+
+        // Mock behavior
+        when(fournisseurMapper.toEntity(dtoToSave)).thenReturn(entityToSave);
+        when(fournisseurRepository.save(entityToSave)).thenReturn(savedEntity);
+        when(fournisseurMapper.toDTO(savedEntity)).thenReturn(savedDto);
+
+        // Act
+        FournisseurResponseDto result = fournisseurService.save(dtoToSave);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(savedDto, result);
+
+        // Verify interactions
+        verify(fournisseurMapper, times(1)).toEntity(dtoToSave);
+        verify(fournisseurRepository, times(1)).save(entityToSave);
+        verify(fournisseurMapper, times(1)).toDTO(savedEntity);
     }
 
 }
