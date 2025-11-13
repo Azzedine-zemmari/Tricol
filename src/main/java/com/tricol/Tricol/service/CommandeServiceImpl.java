@@ -112,14 +112,17 @@ public class CommandeServiceImpl implements CommandeService {
            List<LineCommande> lineCommandes = lineCommandRepository.findByCommandeId(updated.getId());
            for(LineCommande lineCommande : lineCommandes){
                Produit produit =  lineCommande.getProduit();
-
+                double countAncient;
                int stockAncien = produit.getStock_actuel();
-               double coutAncien = produit.getCout_moyen_pondere();
+               if(produit.getCout_moyen_pondere() == null){
+                   countAncient = 1;
+               }
+               countAncient = produit.getCout_moyen_pondere();
                int quantityEntree = lineCommande.getQuantite();
                double countEntree = lineCommande.getPrix_unitaire();
 
                // cump
-               double newCump = ((stockAncien * coutAncien) + (quantityEntree * countEntree)) / (stockAncien + quantityEntree) ;
+               double newCump = ((stockAncien * countAncient) + (quantityEntree * countEntree)) / (stockAncien + quantityEntree) ;
                produit.setCout_moyen_pondere(newCump);
                produit.setStock_actuel(produit.getStock_actuel() + lineCommande.getQuantite());
                produitRepository.save(produit);

@@ -39,3 +39,4 @@ src/
 ├── 📂 model/           → Entités JPA  
 ├── 📂 config/          → Configuration (Swagger, Liquibase, etc.)  
 └── 📜 Application.java → Point d’entrée principal de l’application
+ ## add featurs 
