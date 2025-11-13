@@ -1,7 +1,9 @@
 package com.tricol.Tricol;
 
+import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.dto.produit.ProduitGetDto;
 import com.tricol.Tricol.mapper.ProduitMapper;
+import com.tricol.Tricol.model.Fournisseur;
 import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.ProduitRepository;
 import com.tricol.Tricol.service.ProduitServiceImpl;
@@ -17,14 +19,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 public class ProduitServiceTest {
@@ -70,5 +73,68 @@ public class ProduitServiceTest {
         Assertions.assertThat(result.getContent()).hasSize(1);
         Assertions.assertThat(result.getContent().get(0).getCategorie()).isEqualTo("testProduit");
 
+    }
+
+    @Test
+    void findById_shouldReturnDto_whenEntityExists() {
+        // Arrange
+        String id = UUID.randomUUID().toString();
+        Produit produit = new Produit();
+        ProduitGetDto dto = new ProduitGetDto();
+
+        when(produitRepository.findById(id)).thenReturn(Optional.of(produit));
+        when(produitMapper.toDto(produit)).thenReturn(dto);
+
+        // Act
+        Optional<ProduitGetDto> result = produitService.findById(id);
+
+        // Assert
+        assertTrue(result.isPresent());
+        assertEquals(dto, result.get());
+        verify(produitRepository, times(1)).findById(id);
+        verify(produitMapper, times(1)).toDto(produit);
+    }
+    @Test
+    void findById_shouldReturnEmpty_whenEntityDoesNotExist() {
+        // Arrange
+        String id = "99";
+        when(produitRepository.findById(id)).thenReturn(Optional.empty());
+
+        // Act
+        Optional<ProduitGetDto> result = produitService.findById(id);
+
+        // Assert
+        assertTrue(result.isEmpty());
+        verify(produitRepository, times(1)).findById(id);
+        verify(produitMapper, never()).toDto(any());
+    }
+    @Test
+    void save_shouldReturnDto_whenEntityExists() {
+        ProduitGetDto dto = new ProduitGetDto();
+        Produit entitySave = new Produit();
+        ProduitGetDto produitGetDto = new ProduitGetDto();
+
+        when(produitMapper.toEntity(dto)).thenReturn(entitySave);
+        when(produitRepository.save(entitySave)).thenReturn(entitySave);
+        when(produitMapper.toDto(entitySave)).thenReturn(produitGetDto);
+
+        ProduitGetDto result = produitService.save(dto);
+
+        assertNotNull(result);
+        assertEquals(produitGetDto, result);
+
+        verify(produitMapper).toEntity(dto);
+        verify(produitRepository).save(entitySave);
+        verify(produitMapper).toDto(entitySave);
+    }
+
+
+    @Test
+    void deleteById_shouldCallRepositoryDelete(){
+        String id = UUID.randomUUID().toString();
+
+        produitService.deleteById(id);
+
+        verify(produitRepository, times(1)).deleteById(id);
     }
 }
