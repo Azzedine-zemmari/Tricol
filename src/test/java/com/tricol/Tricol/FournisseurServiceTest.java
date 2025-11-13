@@ -128,5 +128,15 @@ public class FournisseurServiceTest {
         verify(fournisseurRepository, times(1)).save(entityToSave);
         verify(fournisseurMapper, times(1)).toDTO(savedEntity);
     }
+    @Test
+    void deleteById_shouldCallRepositoryDelete() {
+        // Arrange
+        String id = UUID.randomUUID().toString();
 
+        // Act
+        fournisseurService.deleteById(id);
+
+        // Assert
+        verify(fournisseurRepository, times(1)).deleteById(id);
+    }
 }
