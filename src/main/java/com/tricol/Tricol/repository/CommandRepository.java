@@ -1,6 +1,5 @@
 package com.tricol.Tricol.repository;
 
-import com.tricol.Tricol.dto.command.CommandeRequestDto;
 import com.tricol.Tricol.model.Commande;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

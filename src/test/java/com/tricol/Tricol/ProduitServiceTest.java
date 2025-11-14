@@ -1,13 +1,10 @@
 package com.tricol.Tricol;
 
-import com.tricol.Tricol.dto.fournisseur.FournisseurResponseDto;
 import com.tricol.Tricol.dto.produit.ProduitGetDto;
 import com.tricol.Tricol.mapper.ProduitMapper;
-import com.tricol.Tricol.model.Fournisseur;
 import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.ProduitRepository;
 import com.tricol.Tricol.service.ProduitServiceImpl;
-import com.tricol.Tricol.service.serviceInterface.ProduitService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +22,6 @@ import java.util.UUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

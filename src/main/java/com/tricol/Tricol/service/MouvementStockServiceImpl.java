@@ -6,7 +6,6 @@ import com.tricol.Tricol.model.Produit;
 import com.tricol.Tricol.repository.MouvementStockRepository;
 import com.tricol.Tricol.repository.ProduitRepository;
 import com.tricol.Tricol.service.serviceInterface.MovementStockService;
-import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
